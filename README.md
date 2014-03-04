@@ -25,7 +25,7 @@ Here is the complete API reference:
 
 ### Inflector.pluralize
 
-```js
+```javascript
 string pluralize(string word[, string locale])
 ```
 
