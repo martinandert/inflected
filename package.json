@@ -20,7 +20,8 @@
     "dasherize",
     "ordinalize",
     "parameterize",
-    "transliterate"
+    "transliterate",
+    "activesupport"
   ],
   "author": {
     "name": "Martin Andert",
