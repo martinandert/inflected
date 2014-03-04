@@ -1,0 +1,44 @@
+{
+  "name": "inflected",
+  "version": "0.0.0",
+  "description": "A port of ActiveSupport's inflector to Node.js",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martinandert/inflected.git"
+  },
+  "keywords": [
+    "inflector",
+    "inflection",
+    "pluralize",
+    "singularize",
+    "camelize",
+    "titleize",
+    "tableize",
+    "humanize",
+    "capitalize",
+    "dasherize",
+    "ordinalize",
+    "parameterize",
+    "transliterate"
+  ],
+  "author": {
+    "name": "Martin Andert",
+    "email": "mandert@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "make test"
+  },
+  "bugs": {
+    "url": "https://github.com/martinandert/inflected/issues"
+  },
+  "homepage": "https://github.com/martinandert/inflected",
+  "dependencies": {},
+  "peerDependencies": {},
+  "devDependencies": {
+    "jshint": "^2.4.4",
+    "mocha": "^1.17.1",
+    "extend": "^1.2.1"
+  }
+}
