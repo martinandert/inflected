@@ -7,10 +7,16 @@ var inflect   = Inflector.inflections();
 var TestCases = require('./test/cases');
 
 function withDup(fn) {
-  var original = process.__Rejoin_Inflections;
-  process.__Rejoin_Inflections = extend(true, {}, original);
+  var originalInflections = process.__Inflector_Inflections;
+  process.__Inflector_Inflections = extend(true, {}, originalInflections);
+
+  var originalTransliterator = process.__Inflector_Transliterator;
+  process.__Inflector_Transliterator = null;
+
   fn();
-  process.__Rejoin_Inflections = original;
+
+  process.__Inflector_Transliterator = originalTransliterator;
+  process.__Inflector_Inflections = originalInflections;
 }
 
 function objEach(obj, fn) {
@@ -21,7 +27,7 @@ function objEach(obj, fn) {
   }
 }
 
-describe('Rejoin.Inflector', function() {
+describe('Inflector', function() {
   it('properly pluralizes plurals', function() {
     assert.equal(Inflector.pluralize('plurals'), 'plurals');
     assert.equal(Inflector.pluralize('Plurals'), 'Plurals');
@@ -224,7 +230,7 @@ describe('Rejoin.Inflector', function() {
   it('properly classifies table names', function() {
     objEach(TestCases.ClassNameToTableName, function(className, tableName) {
       assert.equal(Inflector.classify(tableName), className);
-      assert.equal(Inflector.classify("table_prefix." + tableName), className);
+      assert.equal(Inflector.classify('table_prefix.' + tableName), className);
     });
   });
 
@@ -248,15 +254,15 @@ describe('Rejoin.Inflector', function() {
     inflect.human(/_cnt$/i, '_count');
     inflect.human(/^prefx_/i, '');
 
-    assert.equal(Inflector.humanize("jargon_cnt"), "Jargon count");
-    assert.equal(Inflector.humanize("prefx_request"), "Request");
+    assert.equal(Inflector.humanize('jargon_cnt'), 'Jargon count');
+    assert.equal(Inflector.humanize('prefx_request'), 'Request');
   });
 
   it('properly humanizes by string', function() {
-    inflect.human("col_rpted_bugs", "Reported bugs");
+    inflect.human('col_rpted_bugs', 'Reported bugs');
 
-    assert.equal(Inflector.humanize("col_rpted_bugs"), "Reported bugs");
-    assert.equal(Inflector.humanize("COL_rpted_bugs"), "Col rpted bugs");
+    assert.equal(Inflector.humanize('col_rpted_bugs'), 'Reported bugs');
+    assert.equal(Inflector.humanize('COL_rpted_bugs'), 'Col rpted bugs');
   });
 
   it('properly generates ordinal suffixes', function() {
@@ -370,7 +376,7 @@ describe('Rejoin.Inflector', function() {
         inflect.plural(/(quiz)$/i, '$1zes');
         inflect.singular(/(database)s$/i, '$1');
         inflect.uncountable('series');
-        inflect.human("col_rpted_bugs", "Reported bugs");
+        inflect.human('col_rpted_bugs', 'Reported bugs');
 
         inflect.clear('all');
 
@@ -389,7 +395,7 @@ describe('Rejoin.Inflector', function() {
         inflect.plural(/(quiz)$/i, '$1zes');
         inflect.singular(/(database)s$/i, '$1');
         inflect.uncountable('series');
-        inflect.human("col_rpted_bugs", "Reported bugs");
+        inflect.human('col_rpted_bugs', 'Reported bugs');
 
         inflect.clear();
 
@@ -398,6 +404,63 @@ describe('Rejoin.Inflector', function() {
         assert(inflect.uncountables.length === 0);
         assert(inflect.humans.length === 0);
       });
+    });
+  });
+
+  it('properly parameterizes', function() {
+    objEach(TestCases.StringToParameterized, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString), parameterizedString);
+    });
+  });
+
+  it('properly parameterizes and normalizes', function() {
+    objEach(TestCases.StringToParameterizedAndNormalized, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString), parameterizedString);
+    });
+  });
+
+  it('properly parameterizes with custom separator', function() {
+    objEach(TestCases.StringToParameterizeWithUnderscore, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString, { separator: '_' }), parameterizedString);
+    });
+  });
+
+  it('properly parameterizes with no separator', function() {
+    objEach(TestCases.StringToParameterizeWithNoSeparator, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString, { separator: null }), parameterizedString);
+      assert.equal(Inflector.parameterize(someString, { separator: '' }), parameterizedString);
+    });
+  });
+
+  it('properly parameterizes with multi character separator', function() {
+    objEach(TestCases.StringToParameterized, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString, { separator: '__sep__' }), parameterizedString.replace(/-/g, '__sep__'));
+    });
+  });
+
+  it('allows overwriting transliterate approximations', function() {
+    withDup(function() {
+      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
+
+      Inflector.transliterations(function(transliterate) {
+        transliterate.approximate('ü', 'ue');
+      });
+
+      assert.equal(Inflector.parameterize('Jürgen'), 'juergen');
+    });
+  });
+
+  it('allows overwriting transliterate approximations for a specific locale', function() {
+    withDup(function() {
+      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
+      assert.equal(Inflector.parameterize('Jürgen', { locale: 'de' }), 'jurgen');
+
+      Inflector.transliterations('de', function(transliterate) {
+        transliterate.approximate('ü', 'ue');
+      });
+
+      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
+      assert.equal(Inflector.parameterize('Jürgen', { locale: 'de' }), 'juergen');
     });
   });
 });

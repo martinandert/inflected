@@ -35,10 +35,13 @@
   },
   "homepage": "https://github.com/martinandert/inflected",
   "dependencies": {},
-  "peerDependencies": {},
+  "peerDependencies": {
+    "counterpart": ">=0.11"
+  },
   "devDependencies": {
     "jshint": "^2.4.4",
     "mocha": "^1.17.1",
-    "extend": "^1.2.1"
+    "extend": "^1.2.1",
+    "counterpart": ">=0.11"
   }
 }
