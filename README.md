@@ -20,9 +20,10 @@ The module exports an object with has several utility functions.
 var Inflector = require('inflected');
 ```
 
-Here is complete reference:
+Here is the complete API reference:
 
-### Inflector.pluralize(word, [locale := 'en'])
+
+#### Inflector.pluralize(word, [locale := 'en'])
 
 Returns the plural form of the word in the string.
 
@@ -39,7 +40,7 @@ Inflector.pluralize('CamelOctopus')     // => 'CamelOctopi'
 Inflector.pluralize('ley', 'es')        // => 'leyes'
 ```
 
-### `Inflector.singularize(word, [locale := 'en'])`
+#### Inflector.singularize(word, [locale := 'en'])
 
 The reverse of `pluralize`, returns the singular form of a word in a
 string.
