@@ -1,6 +1,6 @@
 {
   "name": "inflected",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A port of ActiveSupport's inflector to Node.js",
   "main": "index.js",
   "repository": {
@@ -35,8 +35,7 @@
   },
   "homepage": "https://github.com/martinandert/inflected",
   "dependencies": {},
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "jshint": "^2.4.4",
     "mocha": "^1.17.1",
