@@ -1,5 +1,5 @@
 var assert = require('assert');
-var extend = require('extend');
+var extend = require('object-assign');
 
 var Inflector = require('./');
 var inflect   = Inflector.inflections();
@@ -8,7 +8,7 @@ var TestCases = require('./test/cases');
 
 function withDup(fn) {
   var originalInflections = process.__Inflector_Inflections;
-  process.__Inflector_Inflections = extend(true, {}, originalInflections);
+  process.__Inflector_Inflections = extend({}, originalInflections);
 
   var originalTransliterator = process.__Inflector_Transliterator;
   process.__Inflector_Transliterator = null;
