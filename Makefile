@@ -1,24 +1,21 @@
 BIN = ./node_modules/.bin
-PATH := $(BIN):$(PATH)
 
-test:
-	@mocha -R spec -b spec.js
-
-.PHONY: test
+test: lint
+	@$(BIN)/mocha -R spec -b spec.js
 
 lint:
-	@jshint index.js lib/*.js
+	@$(BIN)/jshint index.js lib/*.js
 
-install link:
-	@npm $@
+install:
+	npm install
 
-release-patch: test lint
+release-patch: test
 	@$(call release,patch)
 
-release-minor: test lint
+release-minor: test
 	@$(call release,minor)
 
-release-major: test lint
+release-major: test
 	@$(call release,major)
 
 publish:
@@ -26,5 +23,5 @@ publish:
 	npm publish
 
 define release
-	npm version $(1) -m 'release %s'
+	npm version $(1) -m 'release v%s'
 endef
