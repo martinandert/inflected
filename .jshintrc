@@ -13,6 +13,7 @@
     "exports": false,
     "console": false,
     "document": false,
-    "setTimeout": false
+    "setTimeout": false,
+    "global": false
   }
 }
