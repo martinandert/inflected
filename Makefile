@@ -4,7 +4,7 @@ test::
 	@yarn test
 
 build::
-	@yarn test
+	@yarn build
 
 clean::
 	@rm -rf dist
