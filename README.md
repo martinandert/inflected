@@ -5,7 +5,7 @@
 [![no dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://npmjs.com/package/inflected)
 [![license](https://img.shields.io/github/license/martinandert/inflected.svg)](https://github.com/martinandert/inflected/blob/master/LICENSE.txt)
 
-A port of ActiveSupport's inflector to Node.js.
+A port of ActiveSupport's inflector to Node.js. Also usable in the browser.
 
 
 ## Installation
