@@ -1,6 +1,5 @@
-'use strict';
-
-var DEFAULT_APPROXIMATIONS = {
+// prettier-ignore
+const DEFAULT_APPROXIMATIONS = {
   'À': 'A',   'Á': 'A',   'Â': 'A',   'Ã': 'A',   'Ä': 'A',   'Å': 'A',   'Æ': 'AE',
   'Ç': 'C',   'È': 'E',   'É': 'E',   'Ê': 'E',   'Ë': 'E',   'Ì': 'I',   'Í': 'I',
   'Î': 'I',   'Ï': 'I',   'Ð': 'D',   'Ñ': 'N',   'Ò': 'O',   'Ó': 'O',   'Ô': 'O',
@@ -31,34 +30,32 @@ var DEFAULT_APPROXIMATIONS = {
   'Ž': 'Z',   'ž': 'z'
 };
 
-var DEFAULT_REPLACEMENT_CHAR = '?';
+const DEFAULT_REPLACEMENT_CHAR = "?";
 
-function Transliterator() {
-  this.approximations = {};
+const instances = {};
 
-  for (var c in DEFAULT_APPROXIMATIONS) {
-    this.approximate(c, DEFAULT_APPROXIMATIONS[c]);
+export default class Transliterator {
+  static getInstance(locale) {
+    instances[locale] = instances[locale] || new Transliterator();
+    return instances[locale];
+  }
+
+  constructor() {
+    this.approximations = {};
+
+    for (const char in DEFAULT_APPROXIMATIONS) {
+      this.approximate(char, DEFAULT_APPROXIMATIONS[char]);
+    }
+  }
+
+  approximate(char, replacement) {
+    this.approximations[char] = replacement;
+  }
+
+  transliterate(string, replacement) {
+    return string.replace(
+      /[^\u0000-\u007f]/g,
+      c => this.approximations[c] || replacement || DEFAULT_REPLACEMENT_CHAR
+    );
   }
 }
-
-Transliterator.getInstance = function(locale) {
-  var storage = typeof process !== 'undefined' ? process : global;
-  storage.__Inflector_Transliterator = storage.__Inflector_Transliterator || {};
-  storage.__Inflector_Transliterator[locale] = storage.__Inflector_Transliterator[locale] || new Transliterator();
-
-  return storage.__Inflector_Transliterator[locale];
-};
-
-Transliterator.prototype.approximate = function(string, replacement) {
-  this.approximations[string] = replacement;
-};
-
-Transliterator.prototype.transliterate = function(string, replacement) {
-  var self = this;
-
-  return string.replace(/[^\u0000-\u007f]/g, function(c) {
-    return self.approximations[c] || replacement || DEFAULT_REPLACEMENT_CHAR;
-  });
-};
-
-module.exports = Transliterator;

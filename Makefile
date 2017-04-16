@@ -1,27 +1,27 @@
 BIN = ./node_modules/.bin
 
-test: lint
-	@$(BIN)/mocha -R spec -b spec.js
+test::
+	@yarn test
 
-lint:
-	@$(BIN)/jshint index.js lib/*.js
+build::
+	@yarn test
 
-install:
-	npm install
+clean::
+	@rm -rf dist
 
-release-patch: test
+release-patch:: clean test build
 	@$(call release,patch)
 
-release-minor: test
+release-minor:: clean test build
 	@$(call release,minor)
 
-release-major: test
+release-major:: clean test build
 	@$(call release,major)
 
-publish:
+publish::
 	git push --tags origin HEAD:master
 	npm publish
 
 define release
-	npm version $(1) -m 'release v%s'
+	npm version $(1) -m 'Release v%s'
 endef

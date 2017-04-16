@@ -1,43 +1,30 @@
-var assert = require('assert');
-var extend = require('object-assign');
+const assert = require('assert');
+const extend = require('object-assign');
 
-var Inflector = require('./');
-var inflect   = Inflector.inflections();
+const Inflector = require('../dist/umd/inflected');
+const inflect = Inflector.inflections();
 
-var TestCases = require('./test/cases');
-
-function withDup(fn) {
-  var originalInflections = process.__Inflector_Inflections;
-  process.__Inflector_Inflections = extend({}, originalInflections);
-
-  var originalTransliterator = process.__Inflector_Transliterator;
-  process.__Inflector_Transliterator = null;
-
-  fn();
-
-  process.__Inflector_Transliterator = originalTransliterator;
-  process.__Inflector_Inflections = originalInflections;
-}
+const TestCases = require('./cases');
 
 function objEach(obj, fn) {
-  for (var key in obj) {
+  for (let key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       fn(key, obj[key]);
     }
   }
 }
 
-describe('Inflector', function() {
-  it('properly pluralizes plurals', function() {
+describe('Inflector', () => {
+  it('properly pluralizes plurals', () => {
     assert.equal(Inflector.pluralize('plurals'), 'plurals');
     assert.equal(Inflector.pluralize('Plurals'), 'Plurals');
   });
 
-  it('properly pluralizes empty string', function() {
+  it('properly pluralizes empty string', () => {
     assert.equal(Inflector.pluralize(''), '');
   });
 
-  it('properly capitalizes strings', function() {
+  it('properly capitalizes strings', () => {
     assert.equal(Inflector.capitalize('foo'), 'Foo');
     assert.equal(Inflector.capitalize('FOO'), 'FOO');
     assert.equal(Inflector.capitalize('foo bar'), 'Foo bar');
@@ -48,81 +35,77 @@ describe('Inflector', function() {
   });
 
   inflect.uncountables.forEach(function(word) {
-    it('respects the uncountability of ' + word, function() {
+    it('respects the uncountability of ' + word, () => {
       assert.equal(Inflector.singularize(word), word);
       assert.equal(Inflector.pluralize(word), word);
       assert.equal(Inflector.singularize(word), Inflector.pluralize(word));
     });
   });
 
-  it('checks uncountable word is not greedy', function() {
-    withDup(function() {
-      var uncountableWord = 'ors';
-      var countableWord = 'sponsor';
+  it('checks uncountable word is not greedy', () => {
+    const uncountableWord = 'ors';
+    const countableWord = 'sponsor';
 
-      inflect.uncountables.push(uncountableWord);
+    inflect.uncountables.push(uncountableWord);
 
-      assert.equal(Inflector.singularize(uncountableWord), uncountableWord);
-      assert.equal(Inflector.pluralize(uncountableWord), uncountableWord);
-      assert.equal(Inflector.singularize(uncountableWord), Inflector.pluralize(uncountableWord));
+    assert.equal(Inflector.singularize(uncountableWord), uncountableWord);
+    assert.equal(Inflector.pluralize(uncountableWord), uncountableWord);
+    assert.equal(Inflector.singularize(uncountableWord), Inflector.pluralize(uncountableWord));
 
-      assert.equal(Inflector.singularize(countableWord), 'sponsor');
-      assert.equal(Inflector.pluralize(countableWord), 'sponsors');
-      assert.equal(Inflector.singularize(Inflector.pluralize(countableWord)), 'sponsor');
-    });
+    assert.equal(Inflector.singularize(countableWord), 'sponsor');
+    assert.equal(Inflector.pluralize(countableWord), 'sponsors');
+    assert.equal(Inflector.singularize(Inflector.pluralize(countableWord)), 'sponsor');
   });
 
   objEach(TestCases.SingularToPlural, function(singular, plural) {
-    it('properly pluralizes ' + singular, function() {
+    it('properly pluralizes ' + singular, () => {
       assert.equal(Inflector.pluralize(singular), plural);
       assert.equal(Inflector.pluralize(Inflector.capitalize(singular)), Inflector.capitalize(plural));
     });
 
-    it('properly pluralizes ' + plural, function() {
+    it('properly pluralizes ' + plural, () => {
       assert.equal(Inflector.pluralize(plural), plural);
       assert.equal(Inflector.pluralize(Inflector.capitalize(plural)), Inflector.capitalize(plural));
     });
 
-    it('properly singularizes ' + plural, function() {
+    it('properly singularizes ' + plural, () => {
       assert.equal(Inflector.singularize(plural), singular);
       assert.equal(Inflector.singularize(Inflector.capitalize(plural)), Inflector.capitalize(singular));
     });
 
-    it('properly singularizes ' + singular, function() {
+    it('properly singularizes ' + singular, () => {
       assert.equal(Inflector.singularize(singular), singular);
       assert.equal(Inflector.singularize(Inflector.capitalize(singular)), Inflector.capitalize(singular));
     });
   });
 
-  it('allows overwriting defined inflectors', function() {
-    withDup(function() {
-      assert.equal(Inflector.singularize('series'), 'series');
-      inflect.singular('series', 'serie');
-      assert.equal(Inflector.singularize('series'), 'serie');
-    });
+  it('allows overwriting defined inflectors', () => {
+    assert.equal(Inflector.singularize('series'), 'series');
+    inflect.singular('series', 'serie');
+    assert.equal(Inflector.singularize('series'), 'serie');
   });
 
   objEach(TestCases.MixtureToTitleCase, function(mixture, titleized) {
-    it('properly titleizes ' + mixture, function() {
+    it('properly titleizes ' + mixture, () => {
       assert.equal(Inflector.titleize(mixture), titleized);
     });
   });
 
   objEach(TestCases.CamelToUnderscore, function(camel, underscore) {
-    it('properly camelizes ' + underscore, function() {
+    it('properly camelizes ' + underscore, () => {
       assert.equal(Inflector.camelize(underscore), camel);
     });
   });
 
-  it('properly camelizes with lower downcases the first letter', function() {
+  it('properly camelizes with lower downcases the first letter', () => {
     assert.equal(Inflector.camelize('Capital', false), 'capital');
   });
 
-  it('properly camelizes with underscores', function() {
+  it('properly camelizes with underscores', () => {
     assert.equal(Inflector.camelize('Camel_Case'), 'CamelCase');
   });
 
-  it('properly handles acronyms', function() {
+  it('properly handles acronyms', () => {
     inflect.acronym('API')
     inflect.acronym('HTML')
     inflect.acronym('HTTP')
@@ -133,7 +116,7 @@ describe('Inflector', function() {
     inflect.acronym('SSL')
 
     //  camelize             underscore            humanize              titleize
-    var items = [
+    const items = [
       ['API',               'api',                'API',                'API'],
       ['APIController',     'api_controller',     'API controller',     'API Controller'],
       ['Nokogiri/HTML',     'nokogiri/html',      'Nokogiri/HTML',      'Nokogiri/HTML'],
@@ -156,9 +139,9 @@ describe('Inflector', function() {
       ['RoRails',           'ro_rails',           'Ro rails',         'Ro Rails']
     ];
 
-    var camel, under, human, title;
+    let camel, under, human, title;
 
-    for (var i in items) {
+    for (let i in items) {
       camel = items[i][0];
       under = items[i][1];
       human = items[i][2];
@@ -174,7 +157,7 @@ describe('Inflector', function() {
     }
   });
 
-  it('allows overwriting acronyms', function() {
+  it('allows overwriting acronyms', () => {
     inflect.acronym('API');
     inflect.acronym('LegacyApi');
 
@@ -184,7 +167,7 @@ describe('Inflector', function() {
     assert.equal(Inflector.camelize('nonlegacyapi'), 'Nonlegacyapi');
   });
 
-  it('properly handles lower camelized acronyms', function() {
+  it('properly handles lower camelized acronyms', () => {
     inflect.acronym('API');
     inflect.acronym('HTML');
 
@@ -193,7 +176,7 @@ describe('Inflector', function() {
     assert.equal(Inflector.camelize('HTMLAPI', false),  'htmlAPI');
   });
 
-  it('properly handles lower camelized acronyms', function() {
+  it('properly handles lower camelized acronyms', () => {
     inflect.acronym('API');
     inflect.acronym('JSON');
     inflect.acronym('HTML');
@@ -201,7 +184,7 @@ describe('Inflector', function() {
     assert.equal(Inflector.underscore('JSONHTMLAPI'), 'json_html_api');
   });
 
-  it('properly underscores', function() {
+  it('properly underscores', () => {
     objEach(TestCases.CamelToUnderscore, function(camel, underscore) {
       assert.equal(Inflector.underscore(camel), underscore);
     });
@@ -211,7 +194,7 @@ describe('Inflector', function() {
     });
   });
 
-  it('properly adds a foreign key sufix', function() {
+  it('properly adds a foreign key suffix', () => {
     objEach(TestCases.ClassNameToForeignKeyWithUnderscore, function(klass, foreignKey) {
       assert.equal(Inflector.foreignKey(klass), foreignKey);
     });
@@ -221,36 +204,36 @@ describe('Inflector', function() {
     });
   });
 
-  it('properly tableizes class names', function() {
+  it('properly tableizes class names', () => {
     objEach(TestCases.ClassNameToTableName, function(className, tableName) {
       assert.equal(Inflector.tableize(className), tableName);
     });
   });
 
-  it('properly classifies table names', function() {
+  it('properly classifies table names', () => {
     objEach(TestCases.ClassNameToTableName, function(className, tableName) {
       assert.equal(Inflector.classify(tableName), className);
       assert.equal(Inflector.classify('table_prefix.' + tableName), className);
     });
   });
 
-  it('properly classifies with leading schema name', function() {
+  it('properly classifies with leading schema name', () => {
     assert.equal(Inflector.classify('schema.foo_bar'), 'FooBar');
   });
 
-  it('properly humanizes underscored strings', function() {
+  it('properly humanizes underscored strings', () => {
     objEach(TestCases.UnderscoreToHuman, function(underscore, human) {
       assert.equal(Inflector.humanize(underscore), human);
     });
   });
 
-  it('properly humanizes underscored strings without capitalize', function() {
+  it('properly humanizes underscored strings without capitalize', () => {
     objEach(TestCases.UnderscoreToHumanWithoutCapitalize, function(underscore, human) {
       assert.equal(Inflector.humanize(underscore, { capitalize: false }), human);
     });
   });
 
-  it('properly humanizes by rule', function() {
+  it('properly humanizes by rule', () => {
     inflect.human(/_cnt$/i, '_count');
     inflect.human(/^prefx_/i, '');
 
@@ -258,44 +241,44 @@ describe('Inflector', function() {
     assert.equal(Inflector.humanize('prefx_request'), 'Request');
   });
 
-  it('properly humanizes by string', function() {
+  it('properly humanizes by string', () => {
     inflect.human('col_rpted_bugs', 'Reported bugs');
 
     assert.equal(Inflector.humanize('col_rpted_bugs'), 'Reported bugs');
     assert.equal(Inflector.humanize('COL_rpted_bugs'), 'Col rpted bugs');
   });
 
-  it('properly generates ordinal suffixes', function() {
+  it('properly generates ordinal suffixes', () => {
     objEach(TestCases.OrdinalNumbers, function(number, ordinalized) {
       assert.equal(ordinalized, number + Inflector.ordinal(number))
     });
   });
 
-  it('properly ordinalizes numbers', function() {
+  it('properly ordinalizes numbers', () => {
     objEach(TestCases.OrdinalNumbers, function(number, ordinalized) {
       assert.equal(Inflector.ordinalize(number), ordinalized);
     });
   });
 
-  it('properly dasherizes underscored strings', function() {
+  it('properly dasherizes underscored strings', () => {
     objEach(TestCases.UnderscoresToDashes, function(underscored, dasherized) {
       assert.equal(Inflector.dasherize(underscored), dasherized);
     });
   });
 
-  it('properly underscores as reverse of dasherize', function() {
+  it('properly underscores as reverse of dasherize', () => {
     objEach(TestCases.UnderscoresToDashes, function(underscored) {
       assert.equal(Inflector.underscore(Inflector.dasherize(underscored)), underscored);
     });
   });
 
-  it('properly underscores to lower camel', function() {
+  it('properly underscores to lower camel', () => {
     objEach(TestCases.UnderscoreToLowerCamel, function(underscored, lowerCamel) {
       assert.equal(Inflector.camelize(underscored, false), lowerCamel);
     });
   });
 
-  it('respects the inflector locale', function() {
+  it('respects the inflector locale', () => {
     Inflector.inflections('es', function(inflect) {
       inflect.plural(/$/, 's');
       inflect.plural(/z$/i, 'ces');
@@ -327,140 +310,124 @@ describe('Inflector', function() {
   });
 
   objEach(TestCases.Irregularities, function(singular, plural) {
-    it('respects the irregularity between ' + singular + ' and ' + plural, function() {
-      withDup(function() {
-        Inflector.inflections(function(inflect) {
-          inflect.irregular(singular, plural)
-          assert.equal(Inflector.singularize(plural), singular);
-          assert.equal(Inflector.pluralize(singular), plural);
-        });
+    it('respects the irregularity between ' + singular + ' and ' + plural, () => {
+      Inflector.inflections(function(inflect) {
+        inflect.irregular(singular, plural)
+        assert.equal(Inflector.singularize(plural), singular);
+        assert.equal(Inflector.pluralize(singular), plural);
       });
     });
   });
 
   objEach(TestCases.Irregularities, function(singular, plural) {
-    it('makes sure that pluralize of irregularity ' + plural + ' is the same', function() {
-      withDup(function() {
-        Inflector.inflections(function(inflect) {
-          inflect.irregular(singular, plural)
-          assert.equal(Inflector.pluralize(plural), plural);
-        });
+    it('makes sure that pluralize of irregularity ' + plural + ' is the same', () => {
+      Inflector.inflections(function(inflect) {
+        inflect.irregular(singular, plural)
+        assert.equal(Inflector.pluralize(plural), plural);
       });
     });
   });
 
   objEach(TestCases.Irregularities, function(singular, plural) {
-    it('makes sure that singularize of irregularity ' + singular + ' is the same', function() {
-      withDup(function() {
-        Inflector.inflections(function(inflect) {
-          inflect.irregular(singular, plural)
-          assert.equal(Inflector.singularize(singular), singular);
-        });
+    it('makes sure that singularize of irregularity ' + singular + ' is the same', () => {
+      Inflector.inflections(function(inflect) {
+        inflect.irregular(singular, plural)
+        assert.equal(Inflector.singularize(singular), singular);
       });
     });
   });
 
   ['plurals', 'singulars', 'uncountables', 'humans', 'acronyms'].forEach(function(scope) {
-    it('properly clears ' + scope + ' inflection scope', function() {
-      withDup(function() {
-        inflect.clear(scope);
-        assert(inflect[scope].length === 0);
-      });
+    it('properly clears ' + scope + ' inflection scope', () => {
+      inflect.clear(scope);
+      assert(inflect[scope].length === 0);
     });
   });
 
-  it('properly clears all reflection scopes', function() {
-    withDup(function() {
-      Inflector.inflections(function(inflect) {
-        // ensure any data is present
-        inflect.plural(/(quiz)$/i, '$1zes');
-        inflect.singular(/(database)s$/i, '$1');
-        inflect.uncountable('series');
-        inflect.human('col_rpted_bugs', 'Reported bugs');
+  it('properly clears all reflection scopes', () => {
+    Inflector.inflections(function(inflect) {
+      // ensure any data is present
+      inflect.plural(/(quiz)$/i, '$1zes');
+      inflect.singular(/(database)s$/i, '$1');
+      inflect.uncountable('series');
+      inflect.human('col_rpted_bugs', 'Reported bugs');
 
-        inflect.clear('all');
+      inflect.clear('all');
 
-        assert(inflect.plurals.length === 0);
-        assert(inflect.singulars.length === 0);
-        assert(inflect.uncountables.length === 0);
-        assert(inflect.humans.length === 0);
-      });
+      assert(inflect.plurals.length === 0);
+      assert(inflect.singulars.length === 0);
+      assert(inflect.uncountables.length === 0);
+      assert(inflect.humans.length === 0);
     });
   });
 
-  it('properly clears with default', function() {
-    withDup(function() {
-      Inflector.inflections(function(inflect) {
-        // ensure any data is present
-        inflect.plural(/(quiz)$/i, '$1zes');
-        inflect.singular(/(database)s$/i, '$1');
-        inflect.uncountable('series');
-        inflect.human('col_rpted_bugs', 'Reported bugs');
+  it('properly clears with default', () => {
+    Inflector.inflections(function(inflect) {
+      // ensure any data is present
+      inflect.plural(/(quiz)$/i, '$1zes');
+      inflect.singular(/(database)s$/i, '$1');
+      inflect.uncountable('series');
+      inflect.human('col_rpted_bugs', 'Reported bugs');
 
-        inflect.clear();
+      inflect.clear();
 
-        assert(inflect.plurals.length === 0);
-        assert(inflect.singulars.length === 0);
-        assert(inflect.uncountables.length === 0);
-        assert(inflect.humans.length === 0);
-      });
+      assert(inflect.plurals.length === 0);
+      assert(inflect.singulars.length === 0);
+      assert(inflect.uncountables.length === 0);
+      assert(inflect.humans.length === 0);
     });
   });
 
-  it('properly parameterizes', function() {
+  it('properly parameterizes', () => {
     objEach(TestCases.StringToParameterized, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString), parameterizedString);
     });
   });
 
-  it('properly parameterizes and normalizes', function() {
+  it('properly parameterizes and normalizes', () => {
     objEach(TestCases.StringToParameterizedAndNormalized, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString), parameterizedString);
     });
   });
 
-  it('properly parameterizes with custom separator', function() {
+  it('properly parameterizes with custom separator', () => {
     objEach(TestCases.StringToParameterizeWithUnderscore, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString, { separator: '_' }), parameterizedString);
     });
   });
 
-  it('properly parameterizes with no separator', function() {
+  it('properly parameterizes with no separator', () => {
     objEach(TestCases.StringToParameterizeWithNoSeparator, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString, { separator: null }), parameterizedString);
       assert.equal(Inflector.parameterize(someString, { separator: '' }), parameterizedString);
     });
   });
 
-  it('properly parameterizes with multi character separator', function() {
+  it('properly parameterizes with multi character separator', () => {
     objEach(TestCases.StringToParameterized, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString, { separator: '__sep__' }), parameterizedString.replace(/-/g, '__sep__'));
     });
   });
 
-  it('allows overwriting transliterate approximations', function() {
-    withDup(function() {
-      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
+  it('allows overwriting transliterate approximations', () => {
+    assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
 
-      Inflector.transliterations(function(transliterate) {
-        transliterate.approximate('ü', 'ue');
-      });
-
-      assert.equal(Inflector.parameterize('Jürgen'), 'juergen');
+    Inflector.transliterations((transliterate) => {
+      transliterate.approximate('ü', 'ue');
     });
+
+    assert.equal(Inflector.parameterize('Jürgen'), 'juergen');
   });
 
-  it('allows overwriting transliterate approximations for a specific locale', function() {
-    withDup(function() {
-      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
-      assert.equal(Inflector.parameterize('Jürgen', { locale: 'de' }), 'jurgen');
+  it('allows overwriting transliterate approximations for a specific locale', () => {
+    assert.equal(Inflector.parameterize('Mädchen'), 'madchen');
+    assert.equal(Inflector.parameterize('Mädchen', { locale: 'de' }), 'madchen');
 
-      Inflector.transliterations('de', function(transliterate) {
-        transliterate.approximate('ü', 'ue');
-      });
-
-      assert.equal(Inflector.parameterize('Jürgen'), 'jurgen');
-      assert.equal(Inflector.parameterize('Jürgen', { locale: 'de' }), 'juergen');
+    Inflector.transliterations('de', (transliterate) => {
+      transliterate.approximate('ä', 'ae');
     });
+
+    assert.equal(Inflector.parameterize('Mädchen'), 'madchen');
+    assert.equal(Inflector.parameterize('Mädchen', { locale: 'de' }), 'maedchen');
   });
 });

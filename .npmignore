@@ -1,6 +1,7 @@
 test
-.jshintrc
+.editorconfig
+.eslintrc
 .npmignore
-LICENSE
+LICENSE.txt
 Makefile
-spec.js
+rollup.config.js
