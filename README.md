@@ -1,5 +1,10 @@
 # inflected
 
+[![Travis build status](https://img.shields.io/travis/martinandert/inflected/master.svg)](https://travis-ci.org/martinandert/inflected)
+[![npm downloads](https://img.shields.io/npm/dm/inflected.svg)](https://npmjs.com/package/inflected)
+[![no dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)](https://npmjs.com/package/inflected)
+[![license](https://img.shields.io/github/license/martinandert/inflected.svg)](https://github.com/martinandert/inflected/blob/master/LICENSE.txt)
+
 A port of ActiveSupport's inflector to Node.js.
 
 
