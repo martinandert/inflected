@@ -11,6 +11,18 @@ Install via npm:
 % npm install inflected
 ```
 
+Or via yarn:
+
+```bash
+% yarn add inflected
+```
+
+The UMD build is also available on [unpkg](https://unpkg.com/), adding a `Inflector` object to the global scope.
+
+```html
+<script src="https://unpkg.com/inflected/dist/umd/inflected.min.js"></script>
+```
+
 
 ## Usage
 
@@ -20,6 +32,14 @@ The module exports an object with several utility functions.
 var Inflector = require('inflected');
 
 Inflector.pluralize('Category')  // => 'Categories'
+```
+
+If using ES modules, you can cherry-pick only the functions you're interested in:
+
+```js
+import { pluralize } from 'inflected';
+
+pluralize('Category')  // => 'Categories'
 ```
 
 Here is the complete API reference:
@@ -36,12 +56,12 @@ Returns the plural form of the word in the string.
 If passed an optional `locale` parameter, the word will be pluralized using rules defined for that language. By default, this parameter is set to "en".
 
 ```js
-Inflector.pluralize('post')             // => 'posts'
-Inflector.pluralize('octopus')          // => 'octopi'
-Inflector.pluralize('sheep')            // => 'sheep'
-Inflector.pluralize('words')            // => 'words'
-Inflector.pluralize('CamelOctopus')     // => 'CamelOctopi'
-Inflector.pluralize('ley', 'es')        // => 'leyes'
+Inflector.pluralize('post')          // => 'posts'
+Inflector.pluralize('octopus')       // => 'octopi'
+Inflector.pluralize('sheep')         // => 'sheep'
+Inflector.pluralize('words')         // => 'words'
+Inflector.pluralize('CamelOctopus')  // => 'CamelOctopi'
+Inflector.pluralize('ley', 'es')     // => 'leyes'
 ```
 
 
@@ -56,12 +76,12 @@ The reverse of `pluralize`, returns the singular form of a word in a string.
 If passed an optional `locale` parameter, the word will be singularized using rules defined for that language. By default, this parameter is set to "en".
 
 ```js
-Inflector.singularize('posts')            // => 'post'
-Inflector.singularize('octopi')           // => 'octopus'
-Inflector.singularize('sheep')            // => 'sheep'
-Inflector.singularize('word')             // => 'word'
-Inflector.singularize('CamelOctopi')      // => 'CamelOctopus'
-Inflector.singularize('leyes', 'es')      // => 'ley'
+Inflector.singularize('posts')        // => 'post'
+Inflector.singularize('octopi')       // => 'octopus'
+Inflector.singularize('sheep')        // => 'sheep'
+Inflector.singularize('word')         // => 'word'
+Inflector.singularize('CamelOctopi')  // => 'CamelOctopus'
+Inflector.singularize('leyes', 'es')  // => 'ley'
 ```
 
 
@@ -74,14 +94,14 @@ string camelize(string term[, boolean uppercaseFirstLetter])
 By default, `camelize` converts strings to UpperCamelCase. If the second argument is set to `false` then `camelize` produces lowerCamelCase.
 
 ```js
-Inflector.camelize('foo_bar')           // => 'FooBar'
-Inflector.camelize('foo_bar', false)    // => 'fooBar'
+Inflector.camelize('foo_bar')         // => 'FooBar'
+Inflector.camelize('foo_bar', false)  // => 'fooBar'
 ```
 
 As a rule of thumb you can think of `camelize` as the inverse of `underscore`, though there are cases where that does not hold:
 
 ```js
-Inflector.camelize(Inflector.underscore('SSLError'))  //=> 'SslError'
+Inflector.camelize(Inflector.underscore('SSLError'))  // => 'SslError'
 ```
 
 ### Inflector.underscore
@@ -93,13 +113,13 @@ string underscore(string camelCasedWord)
 Makes an underscored, lowercase form from the expression in the string.
 
 ```js
-Inflector.underscore('FooBar')      // => 'foo_bar'
+Inflector.underscore('FooBar')  // => 'foo_bar'
 ```
 
 As a rule of thumb you can think of `underscore` as the inverse of `camelize`, though there are cases where that does not hold:
 
 ```js
-Inflector.camelize(Inflector.underscore('SSLError'))  //=> 'SslError'
+Inflector.camelize(Inflector.underscore('SSLError'))  // => 'SslError'
 ```
 
 
@@ -169,7 +189,7 @@ Inflector.classify('posts')         // => 'Post'
 Singular names are not handled correctly:
 
 ```js
-Inflector.classify('business')    // => 'Busines'
+Inflector.classify('business')  // => 'Busines'
 ```
 
 
@@ -192,7 +212,7 @@ Inflector.dasherize('puni_puni')  // => 'puni-puni'
 string foreignKey(string className[, boolean separateClassNameAndIdWithUnderscore])
 ```
 
-Creates a foreign key name from a class name. `separateClassNameAndIdWithUnderscore` sets whether the method should put "_" between the name and "id".
+Creates a foreign key name from a class name. `separateClassNameAndIdWithUnderscore` sets whether the method should put "_" between the name and "id" (default: `true`).
 
 ```js
 Inflector.foreignKey('Message')         // => 'message_id'
@@ -271,8 +291,7 @@ Replaces non-ASCII characters with an ASCII approximation, or if none exists, a 
 Inflector.transliterate('Ærøskøbing')  // => 'AEroskobing'
 ```
 
-Default approximations are provided for Western/Latin characters,
-e.g, "ø", "ñ", "é", "ß", etc.
+Default approximations are provided for Western/Latin characters, e.g, "ø", "ñ", "é", "ß", etc.
 
 This method is I18n-aware, so you can set up custom approximations for a locale. This can be useful, for example, to transliterate German's "ü" and "ö" to "ue" and "oe", or to add support for transliterating Russian to ASCII.
 
@@ -312,13 +331,9 @@ Inflector.parameterize('Donald E. Knuth', { separator: '+' })  // => 'donald+e+k
 Here's a quick guide:
 
 1. Fork the repo and `make install`.
-
 2. Run the tests. We only take pull requests with passing tests, and it's great to know that you have a clean slate: `make test`.
-
 3. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or are fixing a bug, we need a test!
-
 4. Make the test pass.
-
 5. Push to your fork and submit a pull request.
 
 
