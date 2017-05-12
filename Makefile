@@ -1,5 +1,8 @@
 BIN = ./node_modules/.bin
 
+install::
+	@yarn install
+
 test::
 	@yarn test
 
