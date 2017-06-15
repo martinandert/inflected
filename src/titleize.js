@@ -1,9 +1,8 @@
 import humanize from "./humanize";
+import underscore from "./underscore";
 
 export default function titleize(word) {
-  return humanize(
-    this.underscore(word)
-  ).replace(/(^|[\s¿/]+)([a-z])/g, function(
+  return humanize(underscore(word)).replace(/(^|[\s¿/]+)([a-z])/g, function(
     match,
     boundary,
     letter,
