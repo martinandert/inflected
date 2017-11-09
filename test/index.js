@@ -430,4 +430,10 @@ describe('Inflector', () => {
     assert.equal(Inflector.parameterize('Mädchen'), 'madchen');
     assert.equal(Inflector.parameterize('Mädchen', { locale: 'de' }), 'maedchen');
   });
+
+  it('properly converts words to constant case', () => {
+    objEach(TestCases.WordsToConstantCase, function(words, constantCase) {
+      assert.equal(Inflector.constantify(words), constantCase);
+    });
+  });
 });
