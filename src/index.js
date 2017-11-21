@@ -15,3 +15,4 @@ export { default as parameterize } from "./parameterize";
 export { default as capitalize } from "./capitalize";
 export { default as inflections } from "./inflections";
 export { default as transliterations } from "./transliterations";
+export { default as constantify } from "./constantify";

@@ -302,5 +302,16 @@ module.exports = {
     'cow'    : 'kine',
     'zombie' : 'zombies',
     'genus'  : 'genera'
-  }
+  },
+
+  WordsToConstantCase: {
+    'Conciliation'  : 'CONCILIATION',
+    'conciliation'  : 'CONCILIATION',
+    'bankAccount'   : 'BANK_ACCOUNT',
+    'BankAccount'   : 'BANK_ACCOUNT',
+    'bank-account'  : 'BANK_ACCOUNT',
+    'bank_account'  : 'BANK_ACCOUNT',
+    'Bank Account'  : 'BANK_ACCOUNT',
+    'Multiple   Bank Account'  : 'MULTIPLE_BANK_ACCOUNT'
+  },
 };

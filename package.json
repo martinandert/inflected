@@ -21,7 +21,8 @@
     "ordinalize",
     "parameterize",
     "transliterate",
-    "activesupport"
+    "activesupport",
+    "constantcase"
   ],
   "scripts": {
     "lint": "eslint --max-warnings 0 src/**",

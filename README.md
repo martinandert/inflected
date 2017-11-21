@@ -331,6 +331,23 @@ Inflector.parameterize('Donald E. Knuth', { separator: '+' })  // => 'donald+e+k
 ```
 
 
+### Inflector.constantify
+
+```js
+string constantify(string words)
+```
+
+Converts words (camelCased, under_scored, or dasherized) to CONSTANT_CASE.
+
+```js
+Inflector.constantify('bankAccount')   // => 'BANK_ACCOUNT'
+Inflector.constantify('bank-account')  // => 'BANK_ACCOUNT'
+Inflector.constantify('bank_account')  // => 'BANK_ACCOUNT'
+Inflector.constantify('Bank Account')  // => 'BANK_ACCOUNT'
+```
+
+
+
 ## Contributing
 
 Here's a quick guide:
