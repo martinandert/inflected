@@ -17,12 +17,12 @@
     "tableize",
     "humanize",
     "capitalize",
+    "constantify",
     "dasherize",
     "ordinalize",
     "parameterize",
     "transliterate",
-    "activesupport",
-    "constantcase"
+    "activesupport"
   ],
   "scripts": {
     "lint": "eslint --max-warnings 0 src/**",
