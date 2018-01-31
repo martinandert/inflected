@@ -278,6 +278,12 @@ describe('Inflector', () => {
     });
   });
 
+  it('properly dasherizes to lower camel', () => {
+    objEach(TestCases.DashesToLowerCamel, function(dasherized, lowerCamel) {
+      assert.equal(Inflector.camelize(dasherized, false), lowerCamel);
+    });
+  });
+
   it('respects the inflector locale', () => {
     Inflector.inflections('es', function(inflect) {
       inflect.plural(/$/, 's');

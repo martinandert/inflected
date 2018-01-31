@@ -127,6 +127,13 @@ module.exports = {
     'area51_controller'      : 'area51Controller'
   },
 
+  DashesToLowerCamel: {
+    'product'                : 'product',
+    'special-guest'          : 'specialGuest',
+    'application-controller' : 'applicationController',
+    'area51-controller'      : 'area51Controller'
+  },
+
   CamelToUnderscoreWithoutReverse: {
     'HTMLTidy'              : 'html_tidy',
     'HTMLTidyGenerator'     : 'html_tidy_generator',
