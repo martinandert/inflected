@@ -171,6 +171,17 @@ module.exports = {
     'Test with malformed utf8 \251'       : 'testwithmalformedutf8'
   },
 
+  StringToParameterizeWithPreserveCase: {
+    'Donald E. Knuth': 'Donald-E-Knuth',
+    'Random text with *(bad)* Characters': 'Random-text-with-bad-Characters',
+    'Allow_Under_Scores': 'Allow_Under_Scores',
+    'Trailing BAD characters!@#': 'Trailing-BAD-characters',
+    '!@#leading bad Characters': 'leading-bad-Characters',
+    'squeeze   Separators': 'squeeze-Separators',
+    'Test with + Sign': 'Test-with-Sign',
+    'Test with malformed UTF8 \251': 'Test-with-malformed-UTF8'
+  },
+
   StringToParameterizeWithUnderscore: {
     'Donald E. Knuth'                     : 'donald_e_knuth',
     'Random text with *(bad)* characters' : 'random_text_with_bad_characters',

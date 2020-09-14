@@ -403,6 +403,12 @@ describe('Inflector', () => {
     });
   });
 
+  it('properly parameterizes with preserve-case option', () => {
+    objEach(TestCases.StringToParameterizeWithPreserveCase, function(someString, parameterizedString) {
+      assert.equal(Inflector.parameterize(someString, { preserveCase: true }), parameterizedString);
+    });
+  });
+
   it('properly parameterizes with multi character separator', () => {
     objEach(TestCases.StringToParameterized, function(someString, parameterizedString) {
       assert.equal(Inflector.parameterize(someString, { separator: '__sep__' }), parameterizedString.replace(/-/g, '__sep__'));

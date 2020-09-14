@@ -33,5 +33,9 @@ export default function parameterize(string, options = {}) {
     );
   }
 
+  if (options.preserveCase) {
+    return result;
+  }
+
   return result.toLowerCase();
 }

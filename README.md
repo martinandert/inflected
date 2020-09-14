@@ -330,6 +330,12 @@ Inflector.parameterize('Donald E. Knuth')                      // => 'donald-e-k
 Inflector.parameterize('Donald E. Knuth', { separator: '+' })  // => 'donald+e+knuth'
 ```
 
+As of v2.1, there's also a `preserveCase` option:
+
+```js
+Inflector.parameterize('Donald E. Knuth', { preserveCase: true })  // => 'Donald+E+Knuth'
+```
+
 
 ### Inflector.constantify
 
