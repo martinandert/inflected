@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "lint": "eslint --max-warnings 0 src/**",
-    "test": "yarn lint && yarn bundle && mocha -R spec --bail test/index.js",
+    "test": "yarn lint && yarn bundle && mocha -R spec --bail test/index.js && bundlesize",
     "precommit": "lint-staged",
     "build": "yarn bundle && yarn minify",
     "bundle": "rollup --config",
@@ -37,6 +37,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
+    "bundlesize": "^0.18.0",
     "eslint": "^4.18.2",
     "eslint-plugin-import": "^2.2.0",
     "husky": "^0.13.3",
@@ -54,5 +55,11 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/*/inflected.js",
+      "maxSize": "5 kB"
+    }
+  ]
 }
