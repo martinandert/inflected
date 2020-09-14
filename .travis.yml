@@ -4,3 +4,5 @@ node_js:
   - "12"
   - "10"
 cache: yarn
+after_success:
+  - yarn bundlesize --enable-github-checks

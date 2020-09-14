@@ -37,7 +37,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
-    "bundlesize": "^0.18.0",
+    "bundlesize2": "^0.0.26",
     "eslint": "^4.18.2",
     "eslint-plugin-import": "^2.2.0",
     "husky": "^0.13.3",
