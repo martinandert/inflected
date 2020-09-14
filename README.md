@@ -333,7 +333,7 @@ Inflector.parameterize('Donald E. Knuth', { separator: '+' })  // => 'donald+e+k
 As of v2.1, there's also a `preserveCase` option:
 
 ```js
-Inflector.parameterize('Donald E. Knuth', { preserveCase: true })  // => 'Donald+E+Knuth'
+Inflector.parameterize('Donald E. Knuth', { preserveCase: true })  // => 'Donald-E-Knuth'
 ```
 
 
