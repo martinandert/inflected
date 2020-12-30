@@ -45,9 +45,9 @@
     "mocha": "^3.2.0",
     "object-assign": "^4.1.1",
     "prettier": "^1.1.0",
-    "rollup": "^0.41.6",
+    "rollup": "^2.34.1",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-node-resolve": "^3.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
     "uglify-js": "^2.8.22"
   },
   "lint-staged": {
